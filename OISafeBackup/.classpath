@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry exported="true" kind="lib" path="dropbox-android-sdk-1.5.3/lib/dropbox-android-sdk-1.5.3.jar" sourcepath="dropbox-android-sdk-1.5.3/src/main/java"/>
+	<classpathentry exported="true" kind="lib" path="dropbox-android-sdk-1.5.4/lib/dropbox-android-sdk-1.5.4.jar" sourcepath="dropbox-android-sdk-1.5.4/src/main/java/com"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
