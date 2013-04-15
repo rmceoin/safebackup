@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OI Safe Backup</string>
+    <string name="menu_settings">Settings</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="nolocalbackup">No local backup file oisafe.xml exists.</string>
+    <string name="localBackupExists">Local backup oisafe.xml exists.</string>
+    <string name="send">Send</string>
+    <string name="check">Check</string>
+    <string name="modified">Modified</string>
+    <string name="dropbox">Dropbox</string>
+    <string name="notinstalled">OI Safe is not installed</string>
+    <string name="status">Status</string>
+    <string name="dropboxHasBackupFile">Dropbox has a backup file</string>
+    <string name="dropboxHasBackupFileDeleted">Dropbox has a deleted backup file</string>
+    <string name="dropboxNewerBackup">Dropbox has newer backup file</string>
+    <string name="rev">rev</string>
+    <string name="oisafe">OI Safe</string>
+    <string name="get">Get</string>
+
+</resources>
