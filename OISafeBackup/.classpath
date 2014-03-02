@@ -3,7 +3,12 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry exported="true" kind="lib" path="dropbox-android-sdk-1.5.4/lib/dropbox-android-sdk-1.5.4.jar" sourcepath="dropbox-android-sdk-1.5.4/src/main/java/com"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry exported="true" kind="lib" path="dropbox-android-sdk-1.6/lib/dropbox-android-sdk-1.6.jar" sourcepath="dropbox-android-sdk-1.6/src">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/OISafeBackup/dropbox-android-sdk-1.6/docs/index.html!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
