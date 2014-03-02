@@ -9,8 +9,6 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.TokenPair;
-import com.dropbox.client2.session.Session.AccessType;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +32,6 @@ public class MainActivity extends Activity {
 	private static final String TAG = "MainActivity";
 	private static final boolean debug = true;
 
-	final static private AccessType ACCESS_TYPE = AccessType.APP_FOLDER;
 	// In the class declaration section:
 	private DropboxAPI<AndroidAuthSession> mDBApi;
 
@@ -89,7 +86,7 @@ public class MainActivity extends Activity {
 					logOut();
 				} else {
 					// Start the remote authentication
-					mDBApi.getSession().startAuthentication(MainActivity.this);
+					mDBApi.getSession().startOAuth2Authentication(MainActivity.this);
 				}
 			}
 		});
@@ -134,8 +131,7 @@ public class MainActivity extends Activity {
 				session.finishAuthentication();
 
 				// Store it locally in our app for later use
-				TokenPair tokens = session.getAccessTokenPair();
-				storeKeys(tokens.key, tokens.secret);
+				storeAuth(session);
 				setLoggedIn(true);
 			} catch (IllegalStateException e) {
 				showToast("Couldn't authenticate with Dropbox:"
@@ -184,39 +180,43 @@ public class MainActivity extends Activity {
 		error.show();
 	}
 
-	/**
-	 * Shows keeping the access keys returned from Trusted Authenticator in a
-	 * local store, rather than storing user name & password, and
-	 * re-authenticating each time (which is not to be done, ever).
-	 * 
-	 * @return Array of [access_key, access_secret], or null if none stored
-	 */
-	private String[] getKeys() {
+	private void loadAuth(AndroidAuthSession session) {
 		SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 		String key = prefs.getString(DB_ACCESS_KEY_NAME, null);
 		String secret = prefs.getString(DB_ACCESS_SECRET_NAME, null);
-		if (key != null && secret != null) {
-			String[] ret = new String[2];
-			ret[0] = key;
-			ret[1] = secret;
-			return ret;
+		if (key == null || secret == null || key.length() == 0 || secret.length() == 0) return;
+		
+		if (key.equals("oauth2:")) {
+			// If the key is set to "oauth2:", then we can assume the token is for OAuth 2.
+			session.setOAuth2AccessToken(secret);
 		} else {
-			return null;
+			// Still support using old OAuth 1 tokens.
+			session.setAccessTokenPair(new AccessTokenPair(key, secret));
 		}
 	}
 
-	/**
-	 * Shows keeping the access keys returned from Trusted Authenticator in a
-	 * local store, rather than storing user name & password, and
-	 * re-authenticating each time (which is not to be done, ever).
-	 */
-	private void storeKeys(String key, String secret) {
-		// Save the access key for later
-		SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-		Editor edit = prefs.edit();
-		edit.putString(DB_ACCESS_KEY_NAME, key);
-		edit.putString(DB_ACCESS_SECRET_NAME, secret);
-		edit.commit();
+	private void storeAuth(AndroidAuthSession session) {
+		// Store the OAuth 2 access token, if there is one.
+		String oauth2AccessToken = session.getOAuth2AccessToken();
+		if (oauth2AccessToken != null) {
+			SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+			Editor edit = prefs.edit();
+			edit.putString(DB_ACCESS_KEY_NAME, "oauth2:");
+			edit.putString(DB_ACCESS_SECRET_NAME, oauth2AccessToken);
+			edit.commit();
+			return;
+		}
+		// Store the OAuth 1 access token, if there is one.  This is only necessary if
+		// you're still using OAuth 1.
+		AccessTokenPair oauth1AccessToken = session.getAccessTokenPair();
+		if (oauth1AccessToken != null) {
+			SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+			Editor edit = prefs.edit();
+			edit.putString(DB_ACCESS_KEY_NAME, oauth1AccessToken.key);
+			edit.putString(DB_ACCESS_SECRET_NAME, oauth1AccessToken.secret);
+			edit.commit();
+			return;
+		}
 	}
 
 	private void clearKeys() {
@@ -229,21 +229,9 @@ public class MainActivity extends Activity {
 	private AndroidAuthSession buildSession() {
 		AppKeyPair appKeyPair = new AppKeyPair(KeySecret.APP_KEY,
 				KeySecret.APP_SECRET);
-		AndroidAuthSession session;
 
-		String[] stored = getKeys();
-		if (stored != null) {
-			if (debug) {
-				Log.d(TAG, "found stored keys");
-			}
-			AccessTokenPair accessToken = new AccessTokenPair(stored[0],
-					stored[1]);
-			session = new AndroidAuthSession(appKeyPair, ACCESS_TYPE,
-					accessToken);
-		} else {
-			session = new AndroidAuthSession(appKeyPair, ACCESS_TYPE);
-		}
-
+		AndroidAuthSession session = new AndroidAuthSession(appKeyPair);
+		loadAuth(session);
 		return session;
 	}
 
