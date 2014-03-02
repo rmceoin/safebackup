@@ -3,7 +3,10 @@ package org.openintents.oisafebackup;
 import java.io.File;
 import java.util.List;
 
+import org.openintents.oisafebackup.dropbox.CheckForBackups;
 import org.openintents.oisafebackup.dropbox.GetBackup;
+import org.openintents.oisafebackup.dropbox.KeySecret;
+import org.openintents.oisafebackup.dropbox.UploadBackup;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;

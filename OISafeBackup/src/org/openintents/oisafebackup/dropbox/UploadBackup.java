@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.openintents.oisafebackup;
+package org.openintents.oisafebackup.dropbox;
 
 import java.io.File;
 import java.io.FileInputStream;

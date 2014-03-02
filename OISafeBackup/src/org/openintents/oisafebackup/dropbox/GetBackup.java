@@ -65,7 +65,6 @@ public class GetBackup extends AsyncTask<Void, Long, Boolean> {
 	private static final boolean debug = true;
 
 	private Context mContext;
-	private Activity mActivity;
 	private final ProgressDialog mDialog;
 	private DropboxAPI<?> mApi;
 	private String mPath;
@@ -81,7 +80,6 @@ public class GetBackup extends AsyncTask<Void, Long, Boolean> {
 			Activity activity) {
 		// We set the context this way so we don't accidentally leak activities
 		mContext = context.getApplicationContext();
-		mActivity = activity;
 
 		mApi = api;
 		mPath = dropboxPath;

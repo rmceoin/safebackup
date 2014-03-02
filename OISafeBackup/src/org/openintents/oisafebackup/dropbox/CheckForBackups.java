@@ -23,7 +23,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.openintents.oisafebackup;
+package org.openintents.oisafebackup.dropbox;
+
+import org.openintents.oisafebackup.MainActivity;
+import org.openintents.oisafebackup.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
