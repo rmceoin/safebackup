@@ -172,6 +172,7 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 			TextView mModified = (TextView) mActivity
 					.findViewById(R.id.dropboxModified);
 			mModified.setText(entryBackup.modified);
+			String storedRev=getStoredRev();
 			if (debug) {
 				Log.d(TAG, "entryBackup.bytes=" + entryBackup.bytes);
 				Log.d(TAG, "entryBackup.modified=" + entryBackup.modified);
@@ -180,12 +181,13 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 				Log.d(TAG, "entryBackup.rev=" + entryBackup.rev);
 				Log.d(TAG, "entryBackup.root=" + entryBackup.root);
 				Log.d(TAG, "entryBackup.size=" + entryBackup.size);
+				Log.d(TAG, "storedRev=" + storedRev);
 			}
 			// if we found an entry that has zero bytes, then it's deleted
 			// So only store if file has data
 			if (entryBackup.bytes > 0) {
-				if (getStoredRev().equals("") || entryBackup.rev.equals(getStoredRev())) {
-					storeEntry(entryBackup);
+				if (storedRev.equals("") || entryBackup.rev.equals(storedRev)) {
+					MainActivity.storeEntry(mContext, entryBackup);
 					mBackupFileStatus.setText(mContext
 							.getString(R.string.dropboxHasBackupFile));
 					mRev.setText(entryBackup.rev);
@@ -208,15 +210,11 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 		}
 	}
 
-	private void storeEntry(Entry entry) {
-		SharedPreferences prefs = mContext.getSharedPreferences(
-				MainActivity.ACCOUNT_PREFS_NAME, Context.MODE_PRIVATE);
-		Editor edit = prefs.edit();
-		edit.putString(MainActivity.DB_REV_NAME, entry.rev);
-		edit.putString(MainActivity.DB_MODIFIED_NAME, entry.modified);
-		edit.commit();
-	}
-
+	/**
+	 * Get the local stored file revision
+	 * 
+	 * @return stored Rev or empty string
+	 */
 	private String getStoredRev() {
 		SharedPreferences prefs = mContext.getSharedPreferences(
 				MainActivity.ACCOUNT_PREFS_NAME, Context.MODE_PRIVATE);
