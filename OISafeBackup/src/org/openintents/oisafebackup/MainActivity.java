@@ -321,10 +321,16 @@ public class MainActivity extends Activity {
 	}
 	
 	private void startDropbox() {
-		String url = "https://www.dropbox.com/home/Apps/OI%20Safe%20Backup";
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse(url));
-		startActivity(i);
+		Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(
+				"com.dropbox.android");
+		if (LaunchIntent != null) {
+			startActivity(LaunchIntent);
+		}else {
+			String url = "https://www.dropbox.com/home/Apps/OI%20Safe%20Backup";
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			i.setData(Uri.parse(url));
+			startActivity(i);
+		}
 	}
 
 	public static void storeEntry(Context context, Entry entry) {
