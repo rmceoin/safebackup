@@ -74,12 +74,12 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 		mPath = dropboxPath;
 
 		mDialog = new ProgressDialog(context);
-		mDialog.setMessage("Checking for backups");
-		mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
+		mDialog.setMessage(context.getString(R.string.checkForBackups));
+		mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel),
 				new OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						mCanceled = true;
-						mErrorMsg = "Canceled";
+						mErrorMsg = mContext.getString(R.string.canceled);
 					}
 				});
 

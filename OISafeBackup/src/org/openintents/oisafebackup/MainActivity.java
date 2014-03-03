@@ -156,7 +156,7 @@ public class MainActivity extends Activity {
 				storeAuth(session);
 				setLoggedIn(true);
 			} catch (IllegalStateException e) {
-				showToast("Couldn't authenticate with Dropbox:"
+				showToast(getString(R.string.cancel)+":"
 						+ e.getLocalizedMessage());
 				Log.i(TAG, "Error authenticating", e);
 			}
@@ -168,7 +168,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+//		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
