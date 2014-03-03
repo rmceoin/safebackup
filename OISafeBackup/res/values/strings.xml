@@ -19,5 +19,13 @@
     <string name="rev">rev</string>
     <string name="oisafe">OI Safe</string>
     <string name="get">Get</string>
+    <string name="checkForBackups">Checking for backups</string>
+    <string name="cancel">Cancel</string>
+    <string name="canceled">Canceled</string>
+    <string name="uploading">Uploading</string>
+    <string name="backupUploaded">Backup successfully uploaded</string>
+    <string name="gettingBackup">Getting backup</string>
+    <string name="success">Success!</string>
+    <string name="couldntAuthenticate">Couldn't authenticate with Dropbox</string>
 
 </resources>

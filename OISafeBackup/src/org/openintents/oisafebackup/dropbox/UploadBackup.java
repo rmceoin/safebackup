@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.openintents.oisafebackup.MainActivity;
+import org.openintents.oisafebackup.R;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -73,10 +74,10 @@ public class UploadBackup extends AsyncTask<Void, Long, Boolean> {
 
 		mDialog = new ProgressDialog(context);
 		mDialog.setMax(100);
-		mDialog.setMessage("Uploading " + file.getName());
+		mDialog.setMessage(context.getString(R.string.uploading)+ " " + file.getName());
 		mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		mDialog.setProgress(0);
-		mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel", new OnClickListener() {
+		mDialog.setButton(DialogInterface.BUTTON_NEGATIVE,context.getString(R.string.cancel), new OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// This will cancel the putFile operation
 				mRequest.abort();
@@ -166,7 +167,7 @@ public class UploadBackup extends AsyncTask<Void, Long, Boolean> {
 	protected void onPostExecute(Boolean result) {
 		mDialog.dismiss();
 		if (result) {
-			showToast("Backup successfully uploaded");
+			showToast(mContext.getString(R.string.backupUploaded));
 		} else {
 			showToast(mErrorMsg);
 		}

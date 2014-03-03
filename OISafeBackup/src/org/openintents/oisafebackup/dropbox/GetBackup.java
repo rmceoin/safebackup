@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.openintents.oisafebackup.MainActivity;
+import org.openintents.oisafebackup.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -74,12 +75,12 @@ public class GetBackup extends AsyncTask<Void, Long, Boolean> {
 		mPath = dropboxPath;
 
 		mDialog = new ProgressDialog(context);
-		mDialog.setMessage("Getting backup");
-		mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
+		mDialog.setMessage(context.getString(R.string.gettingBackup));
+		mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel),
 				new OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						mCanceled = true;
-						mErrorMsg = "Canceled";
+						mErrorMsg = mContext.getString(R.string.canceled);
 					}
 				});
 
@@ -178,7 +179,7 @@ public class GetBackup extends AsyncTask<Void, Long, Boolean> {
 		mDialog.dismiss();
 
 		if (result) {
-			showToast("Success!");
+			showToast(mContext.getString(R.string.success));
 		} else {
 			// Couldn't download it, so show an error
 			showToast(mErrorMsg);
