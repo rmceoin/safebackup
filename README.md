@@ -24,7 +24,7 @@ to KeySecret.java and update the APP_KEY and APP_SECRET accordingly.
 
 Also update the AndroidManifest.xml in the dropbox activity.
 
-```
+```xml
 <activity
     android:name="com.dropbox.client2.android.AuthActivity"
     android:configChanges="orientation|keyboard"
@@ -32,6 +32,6 @@ Also update the AndroidManifest.xml in the dropbox activity.
     <intent-filter>
 
 	<!-- Change this to be db- followed by your app key -->
-	<data android:scheme="db-makethisyourkey" />
+	<data android:scheme="db-**makethisyourkey**" />
 ```
 
