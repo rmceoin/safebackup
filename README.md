@@ -22,6 +22,11 @@ With the key and secret from the App Console, you then need to copy
 src/org/openintents/oisafebackup/dropbox/KeySecret-template.java.txt 
 to KeySecret.java and update the APP_KEY and APP_SECRET accordingly.
 
+```java
+final static public String APP_KEY = "REPLACE_WITH_KEY";
+final static public String APP_SECRET = "REPLACE_WITH_SECRET";
+```
+
 Also update the AndroidManifest.xml in the dropbox activity.
 
 ```xml
@@ -32,6 +37,6 @@ Also update the AndroidManifest.xml in the dropbox activity.
     <intent-filter>
 
 	<!-- Change this to be db- followed by your app key -->
-	<data android:scheme="db-**makethisyourkey**" />
+	<data android:scheme="db-makethisyourkey" />
 ```
 
