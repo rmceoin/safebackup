@@ -24,6 +24,7 @@ import org.openintents.oisafebackup.dropbox.KeySecret;
 import org.openintents.oisafebackup.dropbox.UploadBackup;
 
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
@@ -32,6 +33,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -323,5 +325,18 @@ public class MainActivity extends Activity {
 		Intent i = new Intent(Intent.ACTION_VIEW);
 		i.setData(Uri.parse(url));
 		startActivity(i);
+	}
+
+	public static void storeEntry(Context context, Entry entry) {
+		if (entry==null) return;
+		SharedPreferences prefs = context.getSharedPreferences(
+				MainActivity.ACCOUNT_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor edit = prefs.edit();
+		if (debug) {
+			Log.d(TAG, "storeEntry: entry.rev=" + entry.rev);
+		}
+		edit.putString(MainActivity.DB_REV_NAME, entry.rev);
+		edit.putString(MainActivity.DB_MODIFIED_NAME, entry.modified);
+		edit.commit();
 	}
 }

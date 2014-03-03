@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import org.openintents.oisafebackup.MainActivity;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +32,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.DropboxAPI.UploadRequest;
 import com.dropbox.client2.ProgressListener;
 import com.dropbox.client2.exception.DropboxException;
@@ -104,7 +107,8 @@ public class UploadBackup extends AsyncTask<Void, Long, Boolean> {
 					});
 
 			if (mRequest != null) {
-				mRequest.upload();
+				Entry entry = mRequest.upload();
+				MainActivity.storeEntry(mContext, entry);
 				return true;
 			}
 

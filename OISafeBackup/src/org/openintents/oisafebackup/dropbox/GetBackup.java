@@ -29,7 +29,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -103,7 +105,10 @@ public class GetBackup extends AsyncTask<Void, Long, Boolean> {
 			info = mApi.getFile(mPath, null, outputStream, null);
 
 			if (debug) {
-				Log.d(TAG, "info=" + entryBackup);
+				Log.d(TAG, "info=" + info);
+			}
+			if (info != null) {
+				MainActivity.storeEntry(mContext, info.getMetadata());
 			}
 			return true;
 
@@ -188,5 +193,4 @@ public class GetBackup extends AsyncTask<Void, Long, Boolean> {
 		Toast error = Toast.makeText(mContext, msg, Toast.LENGTH_LONG);
 		error.show();
 	}
-
 }
