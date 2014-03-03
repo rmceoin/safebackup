@@ -29,16 +29,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.DropboxAPI.DropboxFileInfo;
-import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.exception.DropboxIOException;
 import com.dropbox.client2.exception.DropboxParseException;
@@ -62,7 +59,6 @@ public class GetBackup extends AsyncTask<Void, Long, Boolean> {
 	private DropboxAPI<?> mApi;
 	private String mPath;
 
-	private Entry entryBackup;
 	private DropboxFileInfo info;
 
 	private boolean mCanceled;

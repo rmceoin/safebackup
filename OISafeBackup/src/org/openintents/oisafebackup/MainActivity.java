@@ -60,6 +60,8 @@ public class MainActivity extends Activity {
 	final static public String DB_ACCESS_SECRET_NAME = "ACCESS_SECRET";
 	final static public String DB_REV_NAME = "Dropbox_Rev";
 	final static public String DB_MODIFIED_NAME = "Dropbox_Modified";
+	
+	final static public String DB_APP_NAME = "OI%20Safe%20Backup";
 
 	private boolean mLoggedIn;
 
@@ -326,7 +328,7 @@ public class MainActivity extends Activity {
 		if (LaunchIntent != null) {
 			startActivity(LaunchIntent);
 		}else {
-			String url = "https://www.dropbox.com/home/Apps/OI%20Safe%20Backup";
+			String url = "https://www.dropbox.com/home/Apps/"+DB_APP_NAME;
 			Intent i = new Intent(Intent.ACTION_VIEW);
 			i.setData(Uri.parse(url));
 			startActivity(i);
