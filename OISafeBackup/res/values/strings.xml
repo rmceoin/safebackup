@@ -5,8 +5,8 @@
     <string name="menu_settings">Settings</string>
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
-    <string name="nolocalbackup">No local backup file oisafe.xml exists.</string>
-    <string name="localBackupExists">Local backup oisafe.xml exists.</string>
+    <string name="nolocalbackup">No local backup file %s exists.</string>
+    <string name="localBackupExists">Local backup %s exists.</string>
     <string name="send">Send</string>
     <string name="check">Check</string>
     <string name="modified">Modified</string>

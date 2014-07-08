@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="org.openintents.safe.ACCESS_INTENTS" />
     
     <application
         android:allowBackup="true"
@@ -41,5 +42,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

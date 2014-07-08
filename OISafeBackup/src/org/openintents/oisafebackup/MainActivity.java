@@ -18,6 +18,7 @@ package org.openintents.oisafebackup;
 import java.io.File;
 import java.util.List;
 
+import org.openintents.intents.CryptoIntents;
 import org.openintents.oisafebackup.dropbox.CheckForBackups;
 import org.openintents.oisafebackup.dropbox.GetBackup;
 import org.openintents.oisafebackup.dropbox.KeySecret;
@@ -33,11 +34,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -76,6 +80,11 @@ public class MainActivity extends Activity {
 	private ImageButton mDropboxLogo;
 	private Button mGetFromDropbox;
 
+	private static final int REQUEST_CODE_GET_BACKUP_NAME = 1;
+	
+	private boolean tryingToGetBackupPath = false;
+	private String backupPath;
+	
 	public static final String PREFERENCE_BACKUP_PATH_DEFAULT_VALUE = Environment
 			.getExternalStorageDirectory().getAbsolutePath() + "/oisafe.xml";
 	public static final String DROPBOX_BACKUP_PATH_DEFAULT_VALUE = "/oisafe.xml";
@@ -137,11 +146,13 @@ public class MainActivity extends Activity {
 				getFromDropbox();
 			}
 		});
+		backupPath=PREFERENCE_BACKUP_PATH_DEFAULT_VALUE;
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if (debug) Log.d(TAG,"onResume()");
 		AndroidAuthSession session = mDBApi.getSession();
 
 		// The next part must be inserted in the onResume() method of the
@@ -258,7 +269,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void checkForLocalBackup() {
-		File restoreFile = new File(PREFERENCE_BACKUP_PATH_DEFAULT_VALUE);
+		File restoreFile = new File(backupPath);
 		if (!restoreFile.exists()) {
 			mLocalBackupStatus.setText(R.string.nolocalbackup);
 			mSendToDropbox.setEnabled(false);
@@ -273,7 +284,7 @@ public class MainActivity extends Activity {
 			Log.d(TAG, "sending local to dropbox");
 		}
 
-		File file = new File(PREFERENCE_BACKUP_PATH_DEFAULT_VALUE);
+		File file = new File(backupPath);
 		UploadBackup upload = new UploadBackup(this, mDBApi, "/", file);
 		upload.execute();
 
@@ -309,9 +320,34 @@ public class MainActivity extends Activity {
 		if (oiSafeIsInstalled) {
 			mOISafeNotInstalled.setVisibility(View.INVISIBLE);
 			mOISafeButton.setEnabled(true);
+			getBackupName();
 		} else {
 			mOISafeNotInstalled.setVisibility(View.VISIBLE);
 			mOISafeButton.setEnabled(false);
+		}
+	}
+
+	private void getBackupName() {
+		if (tryingToGetBackupPath==true) {
+			tryingToGetBackupPath=false;
+			return;
+		}
+		Intent i = new Intent();
+		i.setAction(CryptoIntents.ACTION_CRYPTO_GET_BACKUP_NAME);
+		PackageManager pm = getPackageManager();
+		ComponentName cn = i.resolveActivity(pm);
+		if (cn == null) {
+			if (debug) Log.d(TAG, "unable to find ACTION_CRYPTO_GET_BACKUP_NAME");
+			return;
+		}
+		try {
+			if (debug)
+				Log.d(TAG, "getBackupName: startActivity");
+			tryingToGetBackupPath=true;
+			startActivityForResult(i, REQUEST_CODE_GET_BACKUP_NAME);
+		} catch (ActivityNotFoundException e) {
+			if (debug)
+				Log.d(TAG, "failed to get backup name");
 		}
 	}
 
@@ -346,5 +382,23 @@ public class MainActivity extends Activity {
 		edit.putString(MainActivity.DB_REV_NAME, entry.rev);
 		edit.putString(MainActivity.DB_MODIFIED_NAME, entry.modified);
 		edit.commit();
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (debug)
+			Log.d(TAG, "onActivityResult: Received requestCode " + requestCode
+					+ ", resultCode " + resultCode);
+		switch (requestCode) {
+		case REQUEST_CODE_GET_BACKUP_NAME:
+			if (resultCode == RESULT_OK && data != null) {
+				
+				String text = data
+						.getStringExtra(CryptoIntents.EXTRA_TEXT);
+				if (debug) Log.d(TAG,"EXTRA_TEXT="+text);
+				if (text!=null) {
+					backupPath=text;
+				}
+			}
+		}
 	}
 }
