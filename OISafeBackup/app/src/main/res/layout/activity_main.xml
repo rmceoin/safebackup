@@ -1,3 +1,19 @@
+<!--
+    * Copyright (C) 2014 OpenIntents.org
+    *
+    *
+    * Licensed under the Apache License, Version 2.0 (the "License");
+    * you may not use this file except in compliance with the License.
+    * You may obtain a copy of the License at
+    *
+    *      http://www.apache.org/licenses/LICENSE-2.0
+    *
+    * Unless required by applicable law or agreed to in writing, software
+    * distributed under the License is distributed on an "AS IS" BASIS,
+    * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    * See the License for the specific language governing permissions and
+    * limitations under the License.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -27,24 +43,6 @@
             android:layout_below="@+id/localBackupStatus">
 
             <TextView
-                android:id="@+id/dropboxModified"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/dropboxButtons"
-                android:layout_toRightOf="@+id/labelModified"
-                android:paddingLeft="3dp"
-                android:text="@string/modified" />
-
-            <TextView
-                android:id="@+id/dbBackupFileStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/dbRev"
-                android:text="@string/status" />
-
-            <TextView
                 android:id="@+id/labelModified"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,12 +51,46 @@
                 android:text="@string/modified" />
 
             <TextView
+                android:id="@+id/dropboxModified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dropboxButtons"
+                android:layout_toRightOf="@+id/labelModified"
+                android:paddingLeft="3dp"
+                android:text="@string/modified" />
+            <TextView
                 android:id="@+id/dbRev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/labelModified"
                 android:text="@string/rev" />
+
+            <TextView
+                android:id="@+id/dbBackupFileStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/status"
+                android:layout_below="@+id/dbRev" />
+
+            <TextView
+                android:id="@+id/labelLocalModified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/dbBackupFileStatus"
+                android:text="@string/local_modified" />
+
+            <TextView
+                android:id="@+id/localModified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dbBackupFileStatus"
+                android:layout_toRightOf="@id/labelLocalModified"
+                android:paddingLeft="3dp"
+                android:text="@string/modified" />
+
 
             <LinearLayout
                 android:id="@+id/dropboxButtons"

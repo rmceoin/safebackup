@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 OpenIntents
+ * Copyright 2014 OpenIntents
  * 
  * Portions of code are: Copyright (c) 2010-11 Dropbox, Inc.
  *

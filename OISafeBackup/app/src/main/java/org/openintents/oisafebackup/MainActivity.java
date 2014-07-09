@@ -16,6 +16,7 @@
 package org.openintents.oisafebackup;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import org.openintents.intents.CryptoIntents;
@@ -71,6 +72,7 @@ public class MainActivity extends Activity {
 
 	private Button mConnect;
 	private TextView mLocalBackupStatus;
+    private TextView mLocalModified;
 	private Button mSendToDropbox;
     private RelativeLayout mDropboxConnected;
     private TextView mOISafeNotInstalled;
@@ -95,6 +97,7 @@ public class MainActivity extends Activity {
 
 		mConnect = (Button) findViewById(R.id.connect);
 		mLocalBackupStatus = (TextView) findViewById(R.id.localBackupStatus);
+        mLocalModified = (TextView) findViewById(R.id.localModified);
 		mSendToDropbox = (Button) findViewById(R.id.sendToDropbox);
         Button mCheckDropbox = (Button) findViewById(R.id.checkDropbox);
 		mDropboxConnected = (RelativeLayout) findViewById(R.id.dropboxConnected);
@@ -266,13 +269,16 @@ public class MainActivity extends Activity {
 	private void checkForLocalBackup() {
 		File restoreFile = new File(backupPath);
         String msg;
+        String modifiedTime="";
 		if (!restoreFile.exists()) {
             msg = String.format(getString(R.string.nolocalbackup),backupPath);
 			mSendToDropbox.setEnabled(false);
 		} else {
             msg = String.format(getString(R.string.localBackupExists),backupPath);
             mSendToDropbox.setEnabled(true);
+            modifiedTime= new Date(restoreFile.lastModified()).toString();
         }
+        mLocalModified.setText(modifiedTime);
 		mLocalBackupStatus.setText(msg);
 	}
 
