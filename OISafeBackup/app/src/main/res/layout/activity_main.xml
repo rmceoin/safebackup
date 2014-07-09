@@ -1,0 +1,128 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/localBackupStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/connect"
+            android:layout_marginTop="24dp"
+            android:text="@string/nolocalbackup" />
+
+        <RelativeLayout
+            android:id="@+id/dropboxConnected"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/localBackupStatus">
+
+            <TextView
+                android:id="@+id/dropboxModified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dropboxButtons"
+                android:layout_toRightOf="@+id/labelModified"
+                android:paddingLeft="3dp"
+                android:text="@string/modified" />
+
+            <TextView
+                android:id="@+id/dbBackupFileStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/dbRev"
+                android:text="@string/status" />
+
+            <TextView
+                android:id="@+id/labelModified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/dropboxButtons"
+                android:text="@string/modified" />
+
+            <TextView
+                android:id="@+id/dbRev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/labelModified"
+                android:text="@string/rev" />
+
+            <LinearLayout
+                android:id="@+id/dropboxButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true">
+
+                <Button
+                    android:id="@+id/sendToDropbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="@string/send" />
+
+                <Button
+                    android:id="@+id/checkDropbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check" />
+
+                <Button
+                    android:id="@+id/getFromDropbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="@string/get" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/oisafeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/oisafe"
+            android:src="@drawable/ic_launcher_safe" />
+
+        <ImageButton
+            android:id="@+id/dropboxLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/dropbox"
+            android:src="@drawable/dropbox" />
+
+        <Button
+            android:id="@+id/connect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notInstalled"
+            android:layout_centerHorizontal="true"
+            android:text="@string/connect" />
+
+        <TextView
+            android:id="@+id/notInstalled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/notinstalled" />
+
+    </RelativeLayout>
+</ScrollView>

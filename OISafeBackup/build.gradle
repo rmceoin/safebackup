@@ -1,0 +1,25 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.+'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task copyDropboxToLib(type: Copy) {
+    from (file('dropbox-android-sdk-1.6.1/lib')) {
+        include '**/dropbox-android-sdk-*.jar'
+        include '**/httpmime-*.jar'
+        include '**/json_simple-*.jar'
+    }
+    into "app/libs"
+    includeEmptyDirs = false
+}
