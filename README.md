@@ -14,12 +14,15 @@ in the OISafeBackup folder.
 
 https://www.dropbox.com/developers/core/sdks/android
 
+After unziping the dropbox-android-sdk, use Gradle to copy the appropriate
+libraries with './gradlew copyDropboxToLib'.
+
 You will also need to setup a key at the App Console.
 
 https://www.dropbox.com/developers/apps
 
 With the key and secret from the App Console, you then need to copy 
-src/org/openintents/oisafebackup/dropbox/KeySecret-template.java.txt 
+app/src/main/java/org/openintents/oisafebackup/dropbox/KeySecret-template.java.txt 
 to KeySecret.java and update the APP_KEY and APP_SECRET accordingly.
 
 ```java

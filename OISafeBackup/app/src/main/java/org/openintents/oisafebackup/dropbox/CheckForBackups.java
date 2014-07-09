@@ -61,7 +61,6 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 	private Entry entryBackup;
 
 	private boolean mCanceled;
-	private Long mFileLen;
 	private String mErrorMsg;
 
 	public CheckForBackups(Context context, DropboxAPI<?> api,
@@ -86,7 +85,8 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 		mDialog.show();
 	}
 
-	@Override
+	@SuppressWarnings("StatementWithEmptyBody")
+    @Override
 	protected Boolean doInBackground(Void... params) {
 		try {
 			if (mCanceled) {
@@ -154,7 +154,8 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 
 	@Override
 	protected void onProgressUpdate(Long... progress) {
-		int percent = (int) (100.0 * (double) progress[0] / mFileLen + 0.5);
+        // I don't believe this actually gets called.
+        int percent = 0;
 		mDialog.setProgress(percent);
 	}
 

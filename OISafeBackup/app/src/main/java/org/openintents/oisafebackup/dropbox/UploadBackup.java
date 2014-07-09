@@ -86,7 +86,8 @@ public class UploadBackup extends AsyncTask<Void, Long, Boolean> {
 		mDialog.show();
 	}
 
-	@Override
+	@SuppressWarnings("StatementWithEmptyBody")
+    @Override
 	protected Boolean doInBackground(Void... params) {
 		try {
 			// By creating a request, we get a handle to the putFile operation,
@@ -152,7 +153,7 @@ public class UploadBackup extends AsyncTask<Void, Long, Boolean> {
 		} catch (DropboxException e) {
 			// Unknown error
 			mErrorMsg = "Unknown error.  Try again.";
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException ignored) {
 		}
 		return false;
 	}
