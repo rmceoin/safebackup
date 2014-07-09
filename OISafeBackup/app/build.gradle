@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile files('libs/json_simple-1.1.jar')
+    compile files('libs/httpmime-4.0.3.jar')
+    compile files('libs/dropbox-android-sdk-1.6.1.jar')
+}
+
 android {
     compileSdkVersion 19
     buildToolsVersion "20.0.0"
@@ -18,8 +27,41 @@ android {
     }
 }
 
-dependencies {
-    compile files('libs/json_simple-1.1.jar')
-    compile files('libs/httpmime-4.0.3.jar')
-    compile files('libs/dropbox-android-sdk-1.6.1.jar')
+//
+// Sadly there is no Maven repository for dropbox-android-sdk
+//
+apply plugin: 'download-task'
+
+def dropboxSDK = "dropbox-android-sdk-1.6.1"
+def zipfilename = "${dropboxSDK}.zip"
+def zipfullname = "${buildDir}/${zipfilename}"
+
+task downloadDropbox {
+    description 'Download the Dropbox Android SDK'
+    def srcUrl = "https://www.dropbox.com/developers/downloads/sdks/core/android/${zipfilename}"
+    download {
+        src srcUrl
+        dest buildDir
+        onlyIfNewer = true
+    }
 }
+
+task unzipDropbox(dependsOn: downloadDropbox, type: Copy) {
+    description 'Unzip the Dropbox Android SDK'
+    from zipTree( "${zipfullname}" )
+    into buildDir
+}
+
+task copyDropboxToLib(dependsOn: unzipDropbox, type: Copy) {
+    description "Copy the needed libraries from the Dropbox Android SDK"
+    from (file("${buildDir}/${dropboxSDK}/lib")) {
+        include '**/dropbox-android-sdk-*.jar'
+        include '**/httpmime-*.jar'
+        include '**/json_simple-*.jar'
+    }
+    into "libs"
+    includeEmptyDirs = false
+}
+
+tasks.preBuild.dependsOn(copyDropboxToLib)
+
