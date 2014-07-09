@@ -72,15 +72,11 @@ public class MainActivity extends Activity {
 	private Button mConnect;
 	private TextView mLocalBackupStatus;
 	private Button mSendToDropbox;
-	private Button mCheckDropbox;
-	private RelativeLayout mDropboxConnected;
-	private TextView mDropboxModified;
-	private TextView mOISafeNotInstalled;
+    private RelativeLayout mDropboxConnected;
+    private TextView mOISafeNotInstalled;
 	private ImageButton mOISafeButton;
-	private ImageButton mDropboxLogo;
-	private Button mGetFromDropbox;
 
-	private static final int REQUEST_CODE_GET_BACKUP_NAME = 1;
+    private static final int REQUEST_CODE_GET_BACKUP_NAME = 1;
 	
 	private boolean tryingToGetBackupPath = false;
 	private String backupPath;
@@ -100,13 +96,13 @@ public class MainActivity extends Activity {
 		mConnect = (Button) findViewById(R.id.connect);
 		mLocalBackupStatus = (TextView) findViewById(R.id.localBackupStatus);
 		mSendToDropbox = (Button) findViewById(R.id.sendToDropbox);
-		mCheckDropbox = (Button) findViewById(R.id.checkDropbox);
+        Button mCheckDropbox = (Button) findViewById(R.id.checkDropbox);
 		mDropboxConnected = (RelativeLayout) findViewById(R.id.dropboxConnected);
-		mDropboxModified = (TextView) findViewById(R.id.dropboxModified);
+        TextView mDropboxModified = (TextView) findViewById(R.id.dropboxModified);
 		mOISafeNotInstalled = (TextView) findViewById(R.id.notInstalled);
 		mOISafeButton = (ImageButton) findViewById(R.id.oisafeButton);
-		mDropboxLogo = (ImageButton) findViewById(R.id.dropboxLogo);
-		mGetFromDropbox = (Button) findViewById(R.id.getFromDropbox);
+        ImageButton mDropboxLogo = (ImageButton) findViewById(R.id.dropboxLogo);
+        Button mGetFromDropbox = (Button) findViewById(R.id.getFromDropbox);
 
 		mDropboxModified.setText("");
 
@@ -127,25 +123,25 @@ public class MainActivity extends Activity {
 			}
 		});
 		mCheckDropbox.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				checkDropbox();
-			}
-		});
+            public void onClick(View v) {
+                checkDropbox();
+            }
+        });
 		mOISafeButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				startOISafe();
 			}
 		});
 		mDropboxLogo.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				startDropbox();
-			}
-		});
+            public void onClick(View v) {
+                startDropbox();
+            }
+        });
 		mGetFromDropbox.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				getFromDropbox();
-			}
-		});
+            public void onClick(View v) {
+                getFromDropbox();
+            }
+        });
 		backupPath=PREFERENCE_BACKUP_PATH_DEFAULT_VALUE;
 	}
 
@@ -236,7 +232,7 @@ public class MainActivity extends Activity {
 			Editor edit = prefs.edit();
 			edit.putString(DB_ACCESS_KEY_NAME, "oauth2:");
 			edit.putString(DB_ACCESS_SECRET_NAME, oauth2AccessToken);
-			edit.commit();
+			edit.apply();
 			return;
 		}
 		// Store the OAuth 1 access token, if there is one.  This is only necessary if
@@ -247,16 +243,15 @@ public class MainActivity extends Activity {
 			Editor edit = prefs.edit();
 			edit.putString(DB_ACCESS_KEY_NAME, oauth1AccessToken.key);
 			edit.putString(DB_ACCESS_SECRET_NAME, oauth1AccessToken.secret);
-			edit.commit();
-			return;
-		}
+			edit.apply();
+        }
 	}
 
 	private void clearKeys() {
 		SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 		Editor edit = prefs.edit();
 		edit.clear();
-		edit.commit();
+		edit.apply();
 	}
 
 	private AndroidAuthSession buildSession() {
@@ -270,13 +265,15 @@ public class MainActivity extends Activity {
 
 	private void checkForLocalBackup() {
 		File restoreFile = new File(backupPath);
+        String msg;
 		if (!restoreFile.exists()) {
-			mLocalBackupStatus.setText(R.string.nolocalbackup);
+            msg = String.format(getString(R.string.nolocalbackup),backupPath);
 			mSendToDropbox.setEnabled(false);
-			return;
-		}
-		mLocalBackupStatus.setText(R.string.localBackupExists);
-		mSendToDropbox.setEnabled(true);
+		} else {
+            msg = String.format(getString(R.string.localBackupExists),backupPath);
+            mSendToDropbox.setEnabled(true);
+        }
+		mLocalBackupStatus.setText(msg);
 	}
 
 	private void sendLocalToDropbox() {
@@ -303,20 +300,19 @@ public class MainActivity extends Activity {
 
 	private void getFromDropbox() {
 		GetBackup getBackup = new GetBackup(this, mDBApi,
-				DROPBOX_BACKUP_PATH_DEFAULT_VALUE, this);
+				DROPBOX_BACKUP_PATH_DEFAULT_VALUE);
 		getBackup.execute();
 	}
 
 	private void checkOISafeInstalled() {
 		boolean oiSafeIsInstalled = false;
 		List<PackageInfo> packs = getPackageManager().getInstalledPackages(0);
-		for (int i = 0; i < packs.size(); i++) {
-			PackageInfo p = packs.get(i);
-			if (p.packageName.contentEquals("org.openintents.safe")) {
-				oiSafeIsInstalled = true;
-				break;
-			}
-		}
+        for (PackageInfo p : packs) {
+            if (p.packageName.contentEquals("org.openintents.safe")) {
+                oiSafeIsInstalled = true;
+                break;
+            }
+        }
 		if (oiSafeIsInstalled) {
 			mOISafeNotInstalled.setVisibility(View.INVISIBLE);
 			mOISafeButton.setEnabled(true);
@@ -328,7 +324,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void getBackupName() {
-		if (tryingToGetBackupPath==true) {
+		if (tryingToGetBackupPath) {
 			tryingToGetBackupPath=false;
 			return;
 		}

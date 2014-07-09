@@ -217,8 +217,7 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 	private String getStoredRev() {
 		SharedPreferences prefs = mContext.getSharedPreferences(
 				MainActivity.ACCOUNT_PREFS_NAME, Context.MODE_PRIVATE);
-		String rev = prefs.getString(MainActivity.DB_REV_NAME, "");
-		return rev;
+        return prefs.getString(MainActivity.DB_REV_NAME, "");
 	}
 
 	private void showToast(String msg) {

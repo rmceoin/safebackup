@@ -15,6 +15,8 @@
  */
 package org.openintents.intents;
 
+import android.annotation.SuppressLint;
+
 /**
  * @version 1.1.1
  * 
@@ -22,6 +24,7 @@ package org.openintents.intents;
  * @author Peli
  *
  */
+//@SuppressLint("all")
 public class CryptoIntents {
 
 	/**
