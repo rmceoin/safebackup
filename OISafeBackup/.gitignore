@@ -27,3 +27,5 @@ proguard/
 
 # Dropbox Android SDK
 dropbox-android-sdk-*
+httpmime-*.jar
+json_simple-*.jar
