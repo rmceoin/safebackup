@@ -190,11 +190,11 @@ public class CheckForBackups extends AsyncTask<Void, Long, Boolean> {
 					MainActivity.storeEntry(mContext, entryBackup);
 					mBackupFileStatus.setText(mContext
 							.getString(R.string.dropboxHasBackupFile));
-					mRev.setText(entryBackup.rev);
 				} else {
 					mBackupFileStatus.setText(mContext
 							.getString(R.string.dropboxNewerBackup));
 				}
+                mRev.setText(entryBackup.rev);
 				mGetFromDropbox.setEnabled(true);
 			} else {
 				mBackupFileStatus.setText(mContext
