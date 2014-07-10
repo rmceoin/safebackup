@@ -77,6 +77,7 @@ public class MainActivity extends Activity {
     private RelativeLayout mDropboxConnected;
     private TextView mOISafeNotInstalled;
 	private ImageButton mOISafeButton;
+    private TextView mLocalRev;
 
     private static final int REQUEST_CODE_GET_BACKUP_NAME = 1;
 	
@@ -87,12 +88,16 @@ public class MainActivity extends Activity {
 			.getExternalStorageDirectory().getAbsolutePath() + "/oisafe.xml";
 	public static final String DROPBOX_BACKUP_PATH_DEFAULT_VALUE = "/oisafe.xml";
 
+    private static SharedPreferences prefs;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		AndroidAuthSession session = buildSession();
+        prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, Context.MODE_PRIVATE);
+
+        AndroidAuthSession session = buildSession();
 		mDBApi = new DropboxAPI<AndroidAuthSession>(session);
 
 		mConnect = (Button) findViewById(R.id.connect);
@@ -106,6 +111,7 @@ public class MainActivity extends Activity {
 		mOISafeButton = (ImageButton) findViewById(R.id.oisafeButton);
         ImageButton mDropboxLogo = (ImageButton) findViewById(R.id.dropboxLogo);
         Button mGetFromDropbox = (Button) findViewById(R.id.getFromDropbox);
+        mLocalRev = (TextView) findViewById(R.id.localRev);
 
 		mDropboxModified.setText("");
 
@@ -143,10 +149,12 @@ public class MainActivity extends Activity {
 		mGetFromDropbox.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 getFromDropbox();
+                checkForLocalBackup();
             }
         });
 		backupPath=PREFERENCE_BACKUP_PATH_DEFAULT_VALUE;
-	}
+
+    }
 
 	@Override
 	protected void onResume() {
@@ -213,7 +221,6 @@ public class MainActivity extends Activity {
 	}
 
 	private void loadAuth(AndroidAuthSession session) {
-		SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 		String key = prefs.getString(DB_ACCESS_KEY_NAME, null);
 		String secret = prefs.getString(DB_ACCESS_SECRET_NAME, null);
 		if (key == null || secret == null || key.length() == 0 || secret.length() == 0) return;
@@ -231,7 +238,6 @@ public class MainActivity extends Activity {
 		// Store the OAuth 2 access token, if there is one.
 		String oauth2AccessToken = session.getOAuth2AccessToken();
 		if (oauth2AccessToken != null) {
-			SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 			Editor edit = prefs.edit();
 			edit.putString(DB_ACCESS_KEY_NAME, "oauth2:");
 			edit.putString(DB_ACCESS_SECRET_NAME, oauth2AccessToken);
@@ -242,7 +248,6 @@ public class MainActivity extends Activity {
 		// you're still using OAuth 1.
 		AccessTokenPair oauth1AccessToken = session.getAccessTokenPair();
 		if (oauth1AccessToken != null) {
-			SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 			Editor edit = prefs.edit();
 			edit.putString(DB_ACCESS_KEY_NAME, oauth1AccessToken.key);
 			edit.putString(DB_ACCESS_SECRET_NAME, oauth1AccessToken.secret);
@@ -251,7 +256,6 @@ public class MainActivity extends Activity {
 	}
 
 	private void clearKeys() {
-		SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
 		Editor edit = prefs.edit();
 		edit.clear();
 		edit.apply();
@@ -270,6 +274,7 @@ public class MainActivity extends Activity {
 		File restoreFile = new File(backupPath);
         String msg;
         String modifiedTime="";
+        String rev="";
 		if (!restoreFile.exists()) {
             msg = String.format(getString(R.string.nolocalbackup),backupPath);
 			mSendToDropbox.setEnabled(false);
@@ -277,9 +282,11 @@ public class MainActivity extends Activity {
             msg = String.format(getString(R.string.localBackupExists),backupPath);
             mSendToDropbox.setEnabled(true);
             modifiedTime= new Date(restoreFile.lastModified()).toString();
+            rev = prefs.getString(DB_REV_NAME, "");
         }
         mLocalModified.setText(modifiedTime);
 		mLocalBackupStatus.setText(msg);
+        mLocalRev.setText(rev);
 	}
 
 	private void sendLocalToDropbox() {
@@ -375,15 +382,13 @@ public class MainActivity extends Activity {
 
 	public static void storeEntry(Context context, Entry entry) {
 		if (entry==null) return;
-		SharedPreferences prefs = context.getSharedPreferences(
-				MainActivity.ACCOUNT_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor edit = prefs.edit();
 		if (debug) {
 			Log.d(TAG, "storeEntry: entry.rev=" + entry.rev);
 		}
 		edit.putString(MainActivity.DB_REV_NAME, entry.rev);
 		edit.putString(MainActivity.DB_MODIFIED_NAME, entry.modified);
-		edit.commit();
+		edit.apply();
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

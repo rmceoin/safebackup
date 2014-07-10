@@ -44,5 +44,6 @@
     <string name="gettingBackup">Getting backup</string>
     <string name="success">Success!</string>
     <string name="couldntAuthenticate">Couldn\'t authenticate with Dropbox</string>
+    <string name="local_rev">Local rev</string>
 
 </resources>
