@@ -49,6 +49,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,7 +75,7 @@ public class MainActivity extends Activity {
 	private TextView mLocalBackupStatus;
     private TextView mLocalModified;
 	private Button mSendToDropbox;
-    private RelativeLayout mDropboxConnected;
+    private LinearLayout mDropboxConnected;
     private TextView mOISafeNotInstalled;
 	private ImageButton mOISafeButton;
     private TextView mLocalRev;
@@ -105,7 +106,7 @@ public class MainActivity extends Activity {
         mLocalModified = (TextView) findViewById(R.id.localModified);
 		mSendToDropbox = (Button) findViewById(R.id.sendToDropbox);
         Button mCheckDropbox = (Button) findViewById(R.id.checkDropbox);
-		mDropboxConnected = (RelativeLayout) findViewById(R.id.dropboxConnected);
+		mDropboxConnected = (LinearLayout) findViewById(R.id.dropboxConnected);
         TextView mDropboxModified = (TextView) findViewById(R.id.dropboxModified);
 		mOISafeNotInstalled = (TextView) findViewById(R.id.notInstalled);
 		mOISafeButton = (ImageButton) findViewById(R.id.oisafeButton);
@@ -329,10 +330,12 @@ public class MainActivity extends Activity {
 		if (oiSafeIsInstalled) {
 			mOISafeNotInstalled.setVisibility(View.INVISIBLE);
 			mOISafeButton.setEnabled(true);
+            mLocalBackupStatus.setVisibility(View.VISIBLE);
 			getBackupName();
 		} else {
 			mOISafeNotInstalled.setVisibility(View.VISIBLE);
 			mOISafeButton.setEnabled(false);
+            mLocalBackupStatus.setVisibility(View.INVISIBLE);
 		}
 	}
 
